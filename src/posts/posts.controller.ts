@@ -1,35 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
-import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
-import {IsNotEmpty} from 'class-validator'
 import { InjectModel } from 'nestjs-typegoose';
 import {Post as PostSchema} from './post.model'
 import { ModelType } from '@typegoose/typegoose/lib/types';
+import { CreatePostDto } from './dtos/create-post.dto';
+import { UpdatePostDto } from './dtos/update-post.dto';
 
-class CreatePostDto {
-  @ApiProperty({
-    description: '帖子标题',
-    example: '这是第一个帖子标题'
-  })
-  @IsNotEmpty({message: '请填写标题'})
-  title: string
-  @ApiProperty({
-    description: '帖子内容',
-    example: '内容1'
-  })
-  content: string
-}
 
-class UpdatePostDto {
-  @ApiProperty({
-    description: '帖子标题'
-  })
-  title: string
-  @ApiProperty({
-    description: '帖子内容'
-  })
-  content: string
-}
 
 @Controller('posts')
 @ApiTags('帖子')
