@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { ValidationPipe } from '@nestjs/common';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 
 async function bootstrap() {
@@ -17,6 +18,8 @@ async function bootstrap() {
   //全局管道
   app.useGlobalPipes(new ValidationPipe())
 
+  // 全局拦截器，打印返回参数
+  app.useGlobalInterceptors(new TransformInterceptor());
   //监听所有路由请求，打印日志
   // app.use(logger)
   // app.setGlobalPrefix('nest-zero-to-one')

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { UsersService } from './users.service';
@@ -57,6 +57,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Get(':username')
   @ApiOperation({
     summary: '获取用户信息'
