@@ -5,13 +5,15 @@ import {Post as PostSchema} from './post.model'
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
+import { PostsService } from './posts.service';
 
 
 
 @Controller('posts')
 @ApiTags('帖子')
 export class PostsController {
-  constructor(@InjectModel(PostSchema) private readonly postModel: ModelType<PostSchema>) {
+  constructor(@InjectModel(PostSchema) private readonly postModel: ModelType<PostSchema>,
+              private readonly postsService: PostsService) {
   }
 
   @Get()
@@ -19,7 +21,7 @@ export class PostsController {
     summary: '显示博客列表'
   })
   async index() {
-    return await this.postModel.find();
+    return await this.postsService.list();
   }
 
   @Post()
@@ -27,7 +29,7 @@ export class PostsController {
     summary: '创建帖子'
   })
   async create(@Body() createPostDto: CreatePostDto) {
-    await this.postModel.create(createPostDto)
+    await this.postsService.create(createPostDto)
     return {
       success: true
     }
@@ -38,7 +40,7 @@ export class PostsController {
     summary: '详情'
   })
   async detail(@Param('id') id: string) {
-    return await this.postModel.findById(id)
+    return this.postsService.findById(id)
   }
 
   @Put(':id')
@@ -46,7 +48,7 @@ export class PostsController {
     summary: '编辑帖子'
   })
   async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    await this.postModel.findByIdAndUpdate(id, updatePostDto)
+    await this.postsService.update(id, updatePostDto)
     return {
       success: true
     }
@@ -57,7 +59,7 @@ export class PostsController {
     summary: "删除"
   })
   async remove(@Param('id') id: string) {
-    await this.postModel.findByIdAndDelete(id)
+    await this.postsService.deleteById(id)
     return {
       success: true
     }
