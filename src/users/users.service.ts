@@ -28,7 +28,7 @@ export class UsersService {
     }
     const salt = makeSalt()
     registerUserDto.password = encryptPassword(password, salt)
-
+    registerUserDto.salt = salt
     try {
       await this.UserModel.create(registerUserDto)
       return {
@@ -41,6 +41,18 @@ export class UsersService {
         msg: '注册账号失败'
       }
     }
+  }
+
+  async findByUsername(username: string) {
+    const users = await this.UserModel.find({
+      username
+    })
+    if (users.length) {
+      return users[0]
+    } else {
+      return {}
+    }
+
   }
 
 }

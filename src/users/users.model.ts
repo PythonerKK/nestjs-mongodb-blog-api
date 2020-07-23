@@ -22,5 +22,11 @@ export class User {
     example: '张三'
   })
   name: string;
+
+  @prop()
+  @ApiProperty({
+    description: '盐'
+  })
+  salt: string;
 }
 

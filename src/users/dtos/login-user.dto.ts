@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RegisterUserDto {
+export class LoginUserDto {
 
   @IsNotEmpty({message: '请输入用户名'})
   @IsString()
@@ -20,13 +20,5 @@ export class RegisterUserDto {
   @IsString()
   password: string
 
-
-  @ApiProperty({
-    description: '名称',
-    example: '狗蛋'
-  })
-  name: string
-
-  salt: string
 
 }
