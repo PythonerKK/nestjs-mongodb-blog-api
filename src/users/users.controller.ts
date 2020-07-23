@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
@@ -7,6 +7,7 @@ import { UsersService } from './users.service';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from './dtos/login-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('users')
@@ -55,6 +56,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':username')
   @ApiOperation({
     summary: '获取用户信息'
