@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PostsModule } from './posts/posts.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { UsersModule } from './users/users.module';
       useNewUrlParser: true
     }),
     PostsModule,
-    UsersModule]
+    UsersModule,
+    AuthModule]
 })
 export class AppModule {}
