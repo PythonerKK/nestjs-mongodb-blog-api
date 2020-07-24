@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
@@ -8,6 +8,7 @@ import { RegisterUserDto } from './dtos/register-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 
 @Controller('users')
@@ -64,6 +65,17 @@ export class UsersController {
   })
   async getByUsername(@Param("username") username: string) {
     return this.usersService.findByUsername(username)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Put(':username')
+  @ApiOperation({
+    summary: '更新用户信息'
+  })
+  async updateByUsername(@Param('username') username: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateByUsername(username, updateUserDto)
+
   }
 
 

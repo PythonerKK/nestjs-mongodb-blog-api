@@ -4,6 +4,7 @@ import { User as UserSchema } from './users.model';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { encryptPassword, makeSalt } from '../utils/cryptogram';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,7 +53,23 @@ export class UsersService {
     } else {
       return {}
     }
+  }
 
+  async updateByUsername(username: string, updateUserDto: UpdateUserDto) {
+    const users = await this.UserModel.find({username})
+    if (users.length) {
+      const userId = users[0]._id
+      await this.UserModel.findByIdAndUpdate(userId, updateUserDto)
+      return {
+        code: 200,
+        msg: '更新成功'
+      }
+    } else {
+      return {
+        code: 500,
+        msg: '未找到该用户'
+      }
+    }
   }
 
 }

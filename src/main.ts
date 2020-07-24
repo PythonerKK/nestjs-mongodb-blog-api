@@ -32,6 +32,7 @@ async function bootstrap() {
 
 
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle("nest博客api")
     .setDescription("第一个nest项目")
     .setVersion("1.0")
