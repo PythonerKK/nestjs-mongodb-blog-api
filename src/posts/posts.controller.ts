@@ -18,10 +18,8 @@ import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostsService } from './posts.service';
-import { Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
-import { User } from '../users/users.model';
 import { CurrentUser } from '../decorator/user.decorator';
+import { LoginRequired } from '../decorator/auth.decorator';
 
 
 
@@ -40,8 +38,7 @@ export class PostsController {
     return await this.postsService.list();
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  @LoginRequired()
   @Post()
   @ApiOperation({
     summary: '创建帖子'
@@ -74,8 +71,7 @@ export class PostsController {
     }
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  @LoginRequired()
   @Delete(':id')
   @ApiOperation({
     summary: "删除"
