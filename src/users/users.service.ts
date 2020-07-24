@@ -5,6 +5,7 @@ import { ModelType } from '@typegoose/typegoose/lib/types';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { encryptPassword, makeSalt } from '../utils/cryptogram';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { RoleConstants } from './constants/role.constants';
 
 @Injectable()
 export class UsersService {
@@ -30,6 +31,7 @@ export class UsersService {
     const salt = makeSalt()
     registerUserDto.password = encryptPassword(password, salt)
     registerUserDto.salt = salt
+    registerUserDto.role = RoleConstants.NORMAL
     try {
       await this.UserModel.create(registerUserDto)
       return {

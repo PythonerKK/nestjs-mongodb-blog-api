@@ -28,5 +28,11 @@ export class User {
     description: '盐'
   })
   salt: string;
+
+  @prop()
+  @ApiProperty({
+    description: '权限, 1为普通用户，2为管理员'
+  })
+  role: number
 }
 
