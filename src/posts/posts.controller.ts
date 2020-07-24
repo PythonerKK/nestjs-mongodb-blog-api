@@ -34,9 +34,9 @@ export class PostsController {
   @ApiOperation({
     summary: '创建帖子'
   })
-  async create(@Body() createPostDto: CreatePostDto, @Req() request: Request) {
+  async create(@Body() createPostDto: CreatePostDto, @CurrentUser() currentUser) {
     // @ts-ignore
-    createPostDto.userId = request.user.userId
+    createPostDto.userId = currentUser.userId
     await this.postsService.create(createPostDto)
     return {
       success: true
