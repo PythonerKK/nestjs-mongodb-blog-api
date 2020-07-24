@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { RbacInterceptor } from '../interceptor/rbac.interceptor';
 import { RoleConstants } from './constants/role.constants';
+import { LoginRequired } from '../decorator/auth.decorator';
 
 
 @Controller('users')
@@ -21,8 +22,7 @@ export class UsersController {
               private readonly authService: AuthService) {
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  @LoginRequired()
   @Get()
   @ApiOperation({summary: '用户列表'})
   @UseInterceptors(new RbacInterceptor(RoleConstants.ADMIN))
@@ -60,8 +60,8 @@ export class UsersController {
     }
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+
+  @LoginRequired()
   @Get(':username')
   @ApiOperation({
     summary: '获取用户信息'
@@ -70,8 +70,7 @@ export class UsersController {
     return this.usersService.findByUsername(username)
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
+  @LoginRequired()
   @Put(':username')
   @ApiOperation({
     summary: '更新用户信息'
