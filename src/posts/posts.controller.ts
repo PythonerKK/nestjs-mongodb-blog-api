@@ -60,12 +60,15 @@ export class PostsController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({
     summary: "删除"
   })
-  async remove(@Param('id') id: string) {
-    await this.postsService.deleteById(id)
+  async remove(@Param('id') id: string, @Req() request: Request) {
+    // @ts-ignore
+    await this.postsService.deleteById(id, request.user.userId)
     return {
       success: true
     }

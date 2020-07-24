@@ -26,8 +26,17 @@ export class PostsService {
     await this.PostModel.findByIdAndUpdate(id, updatePostDto)
   }
 
-  async deleteById(id: string) {
-    await this.PostModel.findByIdAndDelete(id)
+  async deleteById(id: string, userId: string) {
+    const post = await this.PostModel.findById(id)
+    if (post.userId === userId) {
+      await this.PostModel.findByIdAndDelete(id)
+    } else {
+      return {
+        code: 500,
+        msg: '不能删除他人的文章'
+      }
+    }
+
   }
 
 
