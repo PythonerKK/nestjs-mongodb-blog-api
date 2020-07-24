@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
@@ -9,6 +9,8 @@ import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from './dtos/login-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { RbacInterceptor } from '../interceptor/rbac.interceptor';
+import { RoleConstants } from './constants/role.constants';
 
 
 @Controller('users')
@@ -19,10 +21,11 @@ export class UsersController {
               private readonly authService: AuthService) {
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Get()
-  @ApiOperation({
-    summary: '用户列表'
-  })
+  @ApiOperation({summary: '用户列表'})
+  @UseInterceptors(new RbacInterceptor(RoleConstants.ADMIN))
   async list() {
     return this.usersService.listUser()
   }
