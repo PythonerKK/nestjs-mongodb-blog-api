@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
+import { HttpExceptionFilter } from './filter/http-exception.filter';
 
 
 async function bootstrap() {
@@ -20,9 +21,13 @@ async function bootstrap() {
 
   // 全局拦截器，打印返回参数
   app.useGlobalInterceptors(new TransformInterceptor());
+
   //监听所有路由请求，打印日志
   // app.use(logger)
-  // app.setGlobalPrefix('nest-zero-to-one')
+
+  // 全局过滤器，处理http异常
+  // app.useGlobalFilters(new HttpExceptionFilter())
+
 
 
   const options = new DocumentBuilder()
