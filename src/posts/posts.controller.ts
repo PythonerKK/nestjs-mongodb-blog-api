@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
 import {Post as PostSchema} from './post.model'
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostsService } from './posts.service';
+import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 
 
@@ -24,11 +26,15 @@ export class PostsController {
     return await this.postsService.list();
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({
     summary: '创建帖子'
   })
-  async create(@Body() createPostDto: CreatePostDto) {
+  async create(@Body() createPostDto: CreatePostDto, @Req() request: Request) {
+    // @ts-ignore
+    createPostDto.userId = request.user.userId
     await this.postsService.create(createPostDto)
     return {
       success: true

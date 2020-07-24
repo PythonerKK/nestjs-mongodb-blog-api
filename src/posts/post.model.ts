@@ -15,5 +15,12 @@ export class Post {
     example: '内容1'
   })
   content: string;
+
+  @prop()
+  @ApiProperty({
+    description: '用户id',
+    example: ''
+  })
+  userId: string
 }
 

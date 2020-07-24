@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -17,4 +17,11 @@ export class CreatePostDto {
   })
   @IsString()
   content: string
+
+  @ApiProperty({
+    description: '用户id',
+    example: ''
+  })
+  @IsEmpty()
+  userId: string
 }
