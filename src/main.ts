@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
+import { AllExceptionFilter } from './filter/any-exception.filter';
 
 
 async function bootstrap() {
@@ -27,7 +28,7 @@ async function bootstrap() {
 
   // 全局过滤器，处理http异常
   // app.useGlobalFilters(new HttpExceptionFilter())
-
+  // app.useGlobalFilters(new AllExceptionFilter())
 
 
   const options = new DocumentBuilder()
