@@ -8,6 +8,8 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostsService } from './posts.service';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '../users/users.model';
+import { CurrentUser } from '../decorator/user.decorator';
 
 
 
@@ -66,9 +68,9 @@ export class PostsController {
   @ApiOperation({
     summary: "删除"
   })
-  async remove(@Param('id') id: string, @Req() request: Request) {
+  async remove(@Param('id') id: string, @CurrentUser() user) {
     // @ts-ignore
-    await this.postsService.deleteById(id, request.user.userId)
+    await this.postsService.deleteById(id, user.userId)
     return {
       success: true
     }
