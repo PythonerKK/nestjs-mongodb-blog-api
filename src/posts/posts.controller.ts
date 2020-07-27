@@ -84,5 +84,17 @@ export class PostsController {
     }
   }
 
+  // @LoginRequired()
+  // @Get("my")
+  // @ApiOperation({
+  //   summary: '获取登录用户的所有文章'
+  // })
+  // async getMyPosts(@CurrentUser() user) {
+  //   // @ts-ignore
+  //   console.log(user)
+  //   return this.postsService.getMyPosts(user.userId);
+  //
+  // }
+
 
 }

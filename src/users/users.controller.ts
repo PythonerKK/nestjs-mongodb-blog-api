@@ -1,17 +1,35 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpException, HttpStatus,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { User as UserSchema } from './users.model'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { UsersService } from './users.service';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from './dtos/login-user.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { RbacInterceptor } from '../interceptor/rbac.interceptor';
 import { RoleConstants } from './constants/role.constants';
 import { LoginRequired } from '../decorator/auth.decorator';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { createWriteStream } from 'fs';
+import { doc } from 'prettier';
+import path = require('path')
+import multer = require('multer');
+
+import join = doc.builders.join;
 
 
 @Controller('users')
@@ -78,6 +96,40 @@ export class UsersController {
   async updateByUsername(@Param('username') username: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateByUsername(username, updateUserDto)
 
+  }
+  
+  @Post("upload")
+  @UseInterceptors(FileInterceptor('file', {
+    storage: multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, path.join('/Users/kk/nodeJs/nest/nest-blog-api/upload'))
+      },
+      filename: (req, file, cb) => {
+        cb(null, file.originalname)
+      }
+    })
+  }))
+  async uploadSingle(@UploadedFile() file, @Body() data) {
+    if (!data.name) {
+      throw new BadRequestException("请求参数错误")
+    }
+    return file
+  }
+  
+  @Post('mul-upload')
+  @UseInterceptors(FilesInterceptor('files'))
+  @ApiOperation({
+    summary: '上传多个文件接口'
+  })
+  async uploadFile(@UploadedFiles() files, @Body() data) {
+    if (!data.name || files.length === 0) {
+      throw new HttpException("请求参数错误", HttpStatus.BAD_REQUEST)
+    }
+    for (const file of files) {
+      // @ts-ignore
+      const writeImage = createWriteStream(path.join('/Users/kk/nodeJs/nest/nest-blog-api/upload', `${data.name}-${Date.now()}-${file.originalname}`))
+      writeImage.write(file.buffer)
+    }
   }
 
 
