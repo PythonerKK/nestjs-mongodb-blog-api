@@ -7,6 +7,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { AllExceptionFilter } from './filter/any-exception.filter';
 
+import * as helmet from 'helmet'
 
 async function bootstrap() {
   // mongoose.connect('mongodb://10.211.55.6/nest-blog-api', {
@@ -30,6 +31,8 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter())
   // app.useGlobalFilters(new AllExceptionFilter())
 
+  // 安全
+  app.use(helmet())
 
   const options = new DocumentBuilder()
     .addBearerAuth()
