@@ -9,6 +9,8 @@ import { AllExceptionFilter } from './filter/any-exception.filter';
 
 import * as helmet from 'helmet'
 import * as csurf from 'csurf'
+import * as rateLimit from 'express-rate-limit';
+
 
 async function bootstrap() {
   // mongoose.connect('mongodb://10.211.55.6/nest-blog-api', {
@@ -40,6 +42,14 @@ async function bootstrap() {
 
   // csrf
   // app.use(csurf())
+
+  // 接口限速
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100000, // limit each IP to 100 requests per windowMs
+    }),
+  );
 
   const options = new DocumentBuilder()
     .addBearerAuth()
