@@ -34,6 +34,9 @@ async function bootstrap() {
   // 安全
   app.use(helmet())
 
+  // 跨域
+  app.enableCors()
+
   const options = new DocumentBuilder()
     .addBearerAuth()
     .setTitle("nest博客api")
