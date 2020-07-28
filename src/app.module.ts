@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { RedisModule } from 'nestjs-redis';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { RedisModule } from 'nestjs-redis';
     }),
     PostsModule,
     UsersModule,
-    AuthModule]
+    AuthModule,
+    MailModule]
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer): any {
