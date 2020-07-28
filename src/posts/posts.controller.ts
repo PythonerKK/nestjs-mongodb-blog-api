@@ -70,7 +70,7 @@ export class PostsController {
     updatePostDto.userId = currentUser.userId
     const result = await this.postsService.update(id, updatePostDto)
     if (result['code'] === 500) {
-      return new ErrorResponse(result, result['msg'])
+      return new ErrorResponse(null, result['msg'])
     }
     return new SuccessResponse(result, '更新成功')
   }
@@ -83,6 +83,9 @@ export class PostsController {
   async remove(@Param('id') id: string, @CurrentUser() user) {
     // @ts-ignore
     const result = await this.postsService.deleteById(id, user.userId)
+    if (result['code'] === 500) {
+      return new ErrorResponse(null, result['msg'])
+    }
     return new SuccessResponse(result, '删除成功')
   }
 
