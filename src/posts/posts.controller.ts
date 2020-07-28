@@ -37,6 +37,12 @@ export class PostsController {
     summary: '查看博客列表'
   })
   async index(@Query() query) {
+    if (!query.pageSize) {
+      query.pageSize = 1
+    }
+    if (!query.current) {
+      query.current = 1
+    }
     const result =  await this.postsService.list(query);
     return new SuccessResponse(result, "ok")
   }
