@@ -15,7 +15,7 @@ export class PostsService {
   }
 
 
-  async list(query: any) {
+  async list(query: any, pagination: any) {
     let conditions = {}
     if (query.title) {
       conditions['title'] = {$regex: new RegExp(query.title, 'i')}
@@ -23,7 +23,7 @@ export class PostsService {
     if (query.content) {
       conditions['content'] = {$regex: new RegExp(query.content, 'i')}
     }
-    const { current, pageSize } = query
+    const { current, pageSize } = pagination
     return await this.PostModel.find(conditions).limit(pageSize).skip(current - 1)
   }
 

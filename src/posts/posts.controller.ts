@@ -22,6 +22,7 @@ import { CurrentUser } from '../decorator/user.decorator';
 import { LoginRequired } from '../decorator/auth.decorator';
 import { SuccessResponse } from '../model/success.model';
 import { ErrorResponse } from '../model/error.model';
+import { Pagination } from '../decorator/pagination.decorator';
 
 
 @Controller('posts')
@@ -36,15 +37,9 @@ export class PostsController {
   @ApiOperation({
     summary: '查看博客列表'
   })
-  async index(@Query() query) {
-    if (!query.pageSize) {
-      query.pageSize = 1
-    }
-    if (!query.current) {
-      query.current = 1
-    }
-    const result =  await this.postsService.list(query);
-    return new SuccessResponse(result, "ok")
+  async index(@Query() query, @Pagination() pagination) {
+    const result =  await this.postsService.list(query, pagination);
+    return new SuccessResponse(result, null)
   }
 
   @LoginRequired()
