@@ -54,9 +54,9 @@ export class PostsService {
 
   }
 
-  // async getMyPosts(userId: string) {
-  //   return await this.PostModel.find({userId})
-  // }
+  async getMyPosts(userId: string) {
+    return await this.PostModel.find({userId})
+  }
 
 
 }

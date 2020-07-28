@@ -27,8 +27,9 @@ import { ErrorResponse } from '../model/error.model';
 @Controller('posts')
 @ApiTags('帖子')
 export class PostsController {
-  constructor(@InjectModel(PostSchema) private readonly postModel: ModelType<PostSchema>,
-              private readonly postsService: PostsService) {
+  constructor(
+    @InjectModel(PostSchema) private readonly postModel: ModelType<PostSchema>,
+    private readonly postsService: PostsService) {
   }
 
   @Get()
@@ -89,17 +90,13 @@ export class PostsController {
     return new SuccessResponse(result, '删除成功')
   }
 
-  // @LoginRequired()
-  // @Get("my")
-  // @ApiOperation({
-  //   summary: '获取登录用户的所有文章'
-  // })
-  // async getMyPosts(@CurrentUser() user) {
-  //   // @ts-ignore
-  //   console.log(user)
-  //   return this.postsService.getMyPosts(user.userId);
-  //
-  // }
+  @LoginRequired()
+  @Post("my-posts")
+  @ApiOperation({summary: '获取登录用户的所有文章'})
+  async getMyPosts(@CurrentUser() currentUser) {
+    // @ts-ignore
+    return this.postsService.getMyPosts(currentUser.userId);
+  }
 
 
 }
