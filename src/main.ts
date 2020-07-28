@@ -12,6 +12,8 @@ import * as csurf from 'csurf'
 import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
 
+declare const module: any;
+
 async function bootstrap() {
   // mongoose.connect('mongodb://10.211.55.6/nest-blog-api', {
   //   useNewUrlParser: true,
@@ -63,6 +65,11 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup("api-docs", app, document)
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 
   await app.listen(3000);
 }

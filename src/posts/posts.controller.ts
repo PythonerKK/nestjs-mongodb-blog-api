@@ -32,7 +32,7 @@ export class PostsController {
 
   @Get()
   @ApiOperation({
-    summary: '显示博客列表'
+    summary: '查看博客列表'
   })
   async index() {
     return await this.postsService.list();
