@@ -20,7 +20,7 @@ export class PostsService {
   }
 
   async create(createPostDto: CreatePostDto) {
-    await this.PostModel.create(createPostDto)
+    return await this.PostModel.create(createPostDto)
   }
 
   async findById(id: string) {
@@ -28,13 +28,23 @@ export class PostsService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    await this.PostModel.findByIdAndUpdate(id, updatePostDto)
+    const oldPost = await this.PostModel.findById(id)
+    if (oldPost.userId === updatePostDto['userId']) {
+      // 更新的文章userid和目前登录的用户相同
+      return await this.PostModel.findByIdAndUpdate(id, updatePostDto)
+    } else {
+      return {
+        code: 500,
+        msg: '用户id校验失败'
+      }
+    }
+
   }
 
   async deleteById(id: string, userId: string) {
     const post = await this.PostModel.findById(id)
     if (post.userId === userId) {
-      await this.PostModel.findByIdAndDelete(id)
+      return await this.PostModel.findByIdAndDelete(id)
     } else {
       return {
         code: 500,

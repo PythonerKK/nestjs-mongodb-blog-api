@@ -20,7 +20,8 @@ import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostsService } from './posts.service';
 import { CurrentUser } from '../decorator/user.decorator';
 import { LoginRequired } from '../decorator/auth.decorator';
-
+import { SuccessResponse } from '../model/success.model';
+import { ErrorResponse } from '../model/error.model';
 
 
 @Controller('posts')
@@ -35,7 +36,8 @@ export class PostsController {
     summary: '查看博客列表'
   })
   async index() {
-    return await this.postsService.list();
+    const result =  await this.postsService.list();
+    return new SuccessResponse(result, "ok")
   }
 
   @LoginRequired()
@@ -46,10 +48,8 @@ export class PostsController {
   async create(@Body() createPostDto: CreatePostDto, @CurrentUser() currentUser) {
     // @ts-ignore
     createPostDto.userId = currentUser.userId
-    await this.postsService.create(createPostDto)
-    return {
-      success: true
-    }
+    const result = await this.postsService.create(createPostDto)
+    return new SuccessResponse(result, '创建成功')
   }
 
   @Get(":id")
@@ -57,18 +57,22 @@ export class PostsController {
     summary: '详情'
   })
   async detail(@Param('id') id: string) {
-    return this.postsService.findById(id)
+    const result = await this.postsService.findById(id)
+    return new SuccessResponse(result, 'ok')
   }
 
+  @LoginRequired()
   @Put(':id')
   @ApiOperation({
     summary: '编辑帖子'
   })
-  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    await this.postsService.update(id, updatePostDto)
-    return {
-      success: true
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto, @CurrentUser() currentUser) {
+    updatePostDto.userId = currentUser.userId
+    const result = await this.postsService.update(id, updatePostDto)
+    if (result['code'] === 500) {
+      return new ErrorResponse(result, result['msg'])
     }
+    return new SuccessResponse(result, '更新成功')
   }
 
   @LoginRequired()
@@ -78,10 +82,8 @@ export class PostsController {
   })
   async remove(@Param('id') id: string, @CurrentUser() user) {
     // @ts-ignore
-    await this.postsService.deleteById(id, user.userId)
-    return {
-      success: true
-    }
+    const result = await this.postsService.deleteById(id, user.userId)
+    return new SuccessResponse(result, '删除成功')
   }
 
   // @LoginRequired()

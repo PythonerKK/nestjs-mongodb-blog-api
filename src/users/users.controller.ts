@@ -9,7 +9,7 @@ import {
   Put,
   UploadedFile,
   UploadedFiles,
-  UseInterceptors,
+  UseInterceptors, UsePipes,
 } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -28,8 +28,6 @@ import { createWriteStream } from 'fs';
 import { doc } from 'prettier';
 import path = require('path')
 import multer = require('multer');
-
-import join = doc.builders.join;
 
 
 @Controller('users')
@@ -132,6 +130,7 @@ export class UsersController {
       writeImage.write(file.buffer)
     }
   }
+
 
 
 }
