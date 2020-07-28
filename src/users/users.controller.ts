@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { User as UserSchema } from './users.model'
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { UsersService } from './users.service';
@@ -109,6 +109,7 @@ export class UsersController {
       }
     })
   }))
+  @ApiConsumes('multipart/form-data')
   async uploadSingle(@UploadedFile() file, @Body() data) {
     if (!data.name) {
       throw new BadRequestException("请求参数错误")
