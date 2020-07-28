@@ -10,6 +10,6 @@ export class MailController {
   @Get("send")
   @ApiOperation({summary: '发送邮件'})
   sendEmail() {
-    this.mailService.send("705555262@qq.com", "测试邮件")
+    this.mailService.send("705555262@qq.com", "测试邮件", "测试邮件")
   }
 }

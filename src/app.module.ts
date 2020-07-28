@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { RedisModule } from 'nestjs-redis';
 import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,6 +16,9 @@ import { MailModule } from './mail/mail.module';
     RedisModule.register({
       port: 6379,
       host: 'localhost'
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true
     }),
     PostsModule,
     UsersModule,
