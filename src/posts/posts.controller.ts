@@ -36,8 +36,8 @@ export class PostsController {
   @ApiOperation({
     summary: '查看博客列表'
   })
-  async index() {
-    const result =  await this.postsService.list();
+  async index(@Query() query) {
+    const result =  await this.postsService.list(query);
     return new SuccessResponse(result, "ok")
   }
 

@@ -15,8 +15,15 @@ export class PostsService {
   }
 
 
-  async list() {
-    return await this.PostModel.find()
+  async list(query: any) {
+    let conditions = {}
+    if (query.title) {
+      conditions['title'] = {$regex: new RegExp(query.title, 'i')}
+    }
+    if (query.content) {
+      conditions['content'] = {$regex: new RegExp(query.content, 'i')}
+    }
+    return await this.PostModel.find(conditions)
   }
 
   async create(createPostDto: CreatePostDto) {
