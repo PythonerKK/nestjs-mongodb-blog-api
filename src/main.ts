@@ -10,7 +10,7 @@ import { AllExceptionFilter } from './filter/any-exception.filter';
 import * as helmet from 'helmet'
 import * as csurf from 'csurf'
 import * as rateLimit from 'express-rate-limit';
-
+import * as compression from 'compression';
 
 async function bootstrap() {
   // mongoose.connect('mongodb://10.211.55.6/nest-blog-api', {
@@ -39,6 +39,9 @@ async function bootstrap() {
 
   // 跨域
   app.enableCors()
+
+  // 启动gzip压缩
+  app.use(compression())
 
   // csrf
   // app.use(csurf())
