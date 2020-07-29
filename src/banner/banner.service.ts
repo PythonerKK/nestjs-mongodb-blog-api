@@ -33,7 +33,7 @@ export class BannerService {
     const result = await this.bannerModel
       .find(newConditions)
       .limit(pageSize)
-      .skip(current - 1)
+      .skip((current - 1) * pageSize)
 
     return new SuccessResponse(result, null)
   }
