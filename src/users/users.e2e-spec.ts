@@ -13,7 +13,7 @@ import { getModelToken } from '@nestjs/mongoose';
 
 describe('Users Controller', () => {
   let controller: UsersController;
-
+  let service: UsersService;
   const mockMongooseTokens = [
     {
       provide: getModelToken('User'),
@@ -35,9 +35,11 @@ describe('Users Controller', () => {
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
+    service = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 });

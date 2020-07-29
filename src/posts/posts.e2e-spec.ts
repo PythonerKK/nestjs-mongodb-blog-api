@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { TypegooseModule } from 'nestjs-typegoose';
-import { Post } from './post.model';
 import { RedisModule } from 'nestjs-redis';
 import { getModelToken } from '@nestjs/mongoose';
+import { Post } from './post.model';
 
-describe('PostsService', () => {
+describe('Posts Controller', () => {
+  let controller: PostsController;
   let service: PostsService;
-
   const mockMongooseTokens = [
     {
       provide: getModelToken('Post'),
@@ -17,27 +17,30 @@ describe('PostsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ...mockMongooseTokens,
-        PostsService
-      ],
+      controllers: [PostsController],
       imports: [
         RedisModule.register({
           port: 6379,
           host: 'localhost'
         })
       ],
-    })
-      .compile();
+      providers: [...mockMongooseTokens, PostsService]
+    }).compile();
 
+    controller = module.get<PostsController>(PostsController);
     service = module.get<PostsService>(PostsService);
   });
 
   it('should be defined', () => {
+    expect(controller).toBeDefined();
     expect(service).toBeDefined();
   });
 
-  // it('should 返回文章列表', () => {
-  //   expect(service.list({}, {})).resolves
-  // });
+  // describe('list', () => {
+  //   it('返回所有文章列表', async () => {
+  //     const result = ['test'];
+  //     jest.spyOn(service, 'list').mockImplementation(() => result)
+  //     expect(await controller.index()).toBe(result)
+  //   })
+  // })
 });
