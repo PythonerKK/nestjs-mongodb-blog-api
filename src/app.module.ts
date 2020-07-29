@@ -7,6 +7,8 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { RedisModule } from 'nestjs-redis';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { TasksModule } from './tasks/tasks.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true
     }),
+    ScheduleModule.forRoot(),
     PostsModule,
     UsersModule,
     AuthModule,
-    MailModule]
+    MailModule,
+    TasksModule]
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer): any {
