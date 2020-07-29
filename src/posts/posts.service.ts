@@ -24,7 +24,7 @@ export class PostsService {
       conditions['content'] = {$regex: new RegExp(query.content, 'i')}
     }
     const { current, pageSize } = pagination
-    return await this.PostModel.find(conditions).limit(pageSize).skip(current - 1)
+    return await this.PostModel.find(conditions).limit(pageSize).skip((current - 1) * pageSize)
   }
 
   async create(createPostDto: CreatePostDto) {
