@@ -23,6 +23,6 @@ export class SearchBannerDto {
       tag: ['生活']
     }
   })
-  @IsObject()
+  @IsOptional()
   conditions: object
 }

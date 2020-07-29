@@ -13,19 +13,20 @@ export class BannerService {
 
   async findAll(searchBannerDto: SearchBannerDto): Promise<SuccessResponse> {
     const { current, pageSize, conditions } = searchBannerDto
-
-    // 构造条件对象，转换为模糊匹配
     let newConditions = {}
-    for (let [key, value] of Object.entries(conditions)) {
-      if (key !== 'tag') {
-        newConditions[key] = {
-          $regex: new RegExp(value, 'i')
+    if (conditions) {
+      // 构造条件对象，转换为模糊匹配
+      for (let [key, value] of Object.entries(conditions)) {
+        if (key !== 'tag') {
+          newConditions[key] = {
+            $regex: new RegExp(value, 'i')
+          }
         }
       }
-    }
-    if (conditions['tag']) {
-      newConditions['tags'] = {
-        $in: conditions['tag']
+      if (conditions['tag']) {
+        newConditions['tags'] = {
+          $in: conditions['tag']
+        }
       }
     }
 
