@@ -20,7 +20,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "webpack": "webpack --config webpack.config.js",
-    "webpack-start": "node dist/server"
+    "webpack-start": "node dist/server",
+    "compodoc": "npx compodoc -p tsconfig.json"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.5.1",
@@ -64,6 +65,7 @@
     "webpack-node-externals": "1.7.2"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.11",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
