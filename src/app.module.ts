@@ -9,10 +9,15 @@ import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BannerModule } from './banner/banner.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     TypegooseModule.forRoot("mongodb://10.211.55.6/nest-blog-api", {
+      useNewUrlParser: true
+    }),
+    MongooseModule.forRoot("mongodb://10.211.55.6/nest-blog-api", {
       useNewUrlParser: true
     }),
     RedisModule.register({
@@ -27,7 +32,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     UsersModule,
     AuthModule,
     MailModule,
-    TasksModule]
+    TasksModule,
+    BannerModule]
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer): any {
