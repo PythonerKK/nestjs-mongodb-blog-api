@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string): Promise<any> {
-    console.log('JWT验证 - Step 2: 校验用户信息');
+    // console.log('Step 2: 校验用户信息');
     const user = await this.usersService.findByUsername(username)
     if (user) {
       // @ts-ignore
@@ -48,7 +48,7 @@ export class AuthService {
       name: user.name,
       role: user.role
     }
-    console.log('JWT验证 - Step 3: 处理 jwt 签证');
+    // console.log('Step 3: 处理 jwt 签证');
     try {
       const token = this.jwtService.sign(payload)
       return {
