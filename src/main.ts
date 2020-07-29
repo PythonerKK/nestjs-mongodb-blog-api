@@ -61,7 +61,7 @@ async function bootstrap() {
     .setTitle("nest博客api")
     .setDescription("第一个nest项目")
     .setVersion("1.0")
-    .addTag("kk")
+    .addTag("nest+mongodb+redis博客API接口")
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup("api-docs", app, document)
