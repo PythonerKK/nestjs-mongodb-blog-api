@@ -39,6 +39,9 @@ export class BannerService {
   }
 
   async create(createBannerDto: CreateBannerDto) {
+    if (createBannerDto.tags.includes(",")) {
+      createBannerDto.tags = createBannerDto.tags.split(',')
+    }
     const createdBanner = new this.bannerModel(createBannerDto)
     const result = await createdBanner.save()
     return new SuccessResponse(result, null)

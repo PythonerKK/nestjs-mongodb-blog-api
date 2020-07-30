@@ -11,29 +11,42 @@ import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BannerModule } from './banner/banner.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypegooseModule.forRoot("mongodb://10.211.55.6/nest-blog-api", {
-      useNewUrlParser: true
-    }),
-    MongooseModule.forRoot("mongodb://10.211.55.6/nest-blog-api", {
-      useNewUrlParser: true
-    }),
-    RedisModule.register({
-      port: 6379,
-      host: 'localhost'
-    }),
     ConfigModule.forRoot({
       isGlobal: true
     }),
+    TypegooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: `${configService.get('MONGODB_URI')}`,
+        useNewUrlParser: true
+      }),
+      inject: [ConfigService]
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: `${configService.get('MONGODB_URI')}`,
+        useNewUrlParser: true
+      }),
+      inject: [ConfigService]
+    }),
+    RedisModule.register({
+      port: 6379,
+      host: 'localhost',
+    }),
+
     ScheduleModule.forRoot(),
     PostsModule,
     UsersModule,
     AuthModule,
     MailModule,
     TasksModule,
-    BannerModule]
+    BannerModule
+  ]
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer): any {

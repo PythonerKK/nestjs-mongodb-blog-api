@@ -11,6 +11,7 @@ import * as helmet from 'helmet'
 import * as csurf from 'csurf'
 import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
+import { BannerModule } from './banner/banner.module';
 
 declare const module: any;
 
@@ -70,6 +71,7 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
+  
 
   await app.listen(3000);
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsArray, IsEmpty, IsNotEmpty, IsString, IsUrl } from 'class-validator';
 
 export class CreateBannerDto {
   @ApiProperty({
@@ -11,12 +11,10 @@ export class CreateBannerDto {
   name: string
 
   @ApiProperty({
-    description: '图片地址',
-    example: 'http://xxx'
+    description: '图片地址'
   })
-  @IsNotEmpty()
-  @IsUrl()
-  image: string
+  @IsEmpty()
+  image: any
 
   @ApiProperty({
     description: '链接地址',
@@ -28,8 +26,8 @@ export class CreateBannerDto {
 
   @ApiProperty({
     description: '标签',
-    example: ["生活", "美丽"]
+    example: "生活,美丽"
   })
-  @IsArray()
-  tags: string[]
+  @IsString()
+  tags: any
 }
