@@ -6,7 +6,7 @@ export const Pagination = createParamDecorator(
     let query = request.query
     let result = {}
     if (!query.pageSize) {
-      result['pageSize'] = 1
+      result['pageSize'] = 10
     } else {
       result['pageSize'] = Number.parseInt(query.pageSize)
     }
